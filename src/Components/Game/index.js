@@ -256,7 +256,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const intervalId = setInterval(this.tick, 1000)
+    this.intervalId = setInterval(this.tick, 1000)
   }
 
   onClickFruits = () => {
@@ -288,23 +288,30 @@ class Game extends Component {
   }
 
   tick = () => {
-    this.setState(prevState => ({time: prevState.time - 1}))
+    const {time} = this.state
+    if (time === 50) {
+      clearInterval(this.intervalId)
+      this.setState({result: true})
+    } else {
+      this.setState(prevState => ({time: prevState.time - 1}))
+    }
   }
 
   playAgain = () => {
-    this.setState({score: 0, time: 60, result: false})
+    this.setState({
+      list: imagesList,
+      category: 'FRUIT',
+      showObject: imagesList[0],
+      showPic: imagesList[0].imageUrl,
+      score: 0,
+      time: 60,
+      result: false,
+    })
+    this.componentDidMount()
   }
 
   render() {
     const {category, showObject, showPic, score, time, result} = this.state
-    let Result
-    if (result === true) {
-      Result = true
-    } else if (time <= 0) {
-      Result = true
-    } else {
-      Result = false
-    }
 
     const showImgs = imagesList.filter(each => each.category === category)
     return (
@@ -332,7 +339,7 @@ class Game extends Component {
         </li>
         <li>
           <div className="main-background">
-            {!Result ? (
+            {!result ? (
               <div className="con">
                 <div className="showpic-con">
                   <img className="show-pic" src={showPic} alt="match" />
