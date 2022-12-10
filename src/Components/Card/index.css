@@ -1,0 +1,10 @@
+.image {
+  height: 120px;
+  width: 120px;
+}
+li {
+  list-style-type: none;
+}
+button {
+  border-width: 0px;
+}
